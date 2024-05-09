@@ -7,14 +7,25 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 
 import "leaflet-defaulticon-compatibility";
 // END: Preserve spaces to avoid auto-sorting
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { MapPoint } from "@/types/MapPoint";
+import { MapContainer, Polyline, Popup, TileLayer } from "react-leaflet";
+import { Activity } from "@/types/Strava";
+import { useEffect } from "react";
 
-export default function Map({ pointsData }: { pointsData: MapPoint }) {
+export default function Map({
+  points,
+  location,
+}: {
+  points: Activity[];
+  location: [number, number];
+}) {
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
+
   return (
     <MapContainer
       preferCanvas={true}
-      center={[51.505, -0.09]}
+      center={location}
       zoom={11}
       scrollWheelZoom={true}
       style={{ height: "100vh", width: "100vw" }}
@@ -23,16 +34,12 @@ export default function Map({ pointsData }: { pointsData: MapPoint }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {pointsData.map((point: MapPoint) => (
-        <Marker
-          key={point.id}
-          position={[point.gps.latitude, point.gps.longitude]}
-        >
+      {points.map((activity: Activity) => (
+        <Polyline key={activity.id} positions={activity.positions}>
           <Popup>
-            This Marker icon is displayed correctly with{" "}
-            <i>leaflet-defaulticon-compatibility</i>.
+            <h2>{activity.name}</h2>
           </Popup>
-        </Marker>
+        </Polyline>
       ))}
     </MapContainer>
   );
