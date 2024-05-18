@@ -1,10 +1,9 @@
 "use client";
 
-import { useContext } from "react";
-import { ActivitiesContext } from "@/app/context/activities-context";
+import { useActivities } from "../hooks/useActivities";
 
 export default function Page() {
-  const { activities } = useContext(ActivitiesContext);
+  const { activities, loading, error } = useActivities();
   return (
     <>
       <h1>Hello, Activities page!</h1>
