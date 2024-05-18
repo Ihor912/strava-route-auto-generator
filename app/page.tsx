@@ -4,16 +4,17 @@ import dynamic from "next/dynamic";
 
 import axios from "axios";
 import polyline from "@mapbox/polyline";
-import { useEffect, useState } from "react";
-import { Activity, ActivityResponse } from "@/types/Strava";
+import { useContext, useEffect, useState } from "react";
+import { ActivityResponse } from "@/types/Strava";
+import { ActivitiesContext } from "./context/activities-context";
 
-const LazyMap = dynamic(() => import("@/components/Map"), {
+const LazyMap = dynamic(() => import("@/app/ui/map"), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
 
 export default function Home() {
-  const [activities, setActivities] = useState<Activity[]>([]);
+  const { activities, setActivities } = useContext(ActivitiesContext);
   const [currentLocation, setCurrentLocation] = useState<[number, number] | []>(
     []
   );
@@ -29,30 +30,22 @@ export default function Home() {
     }
 
     async function fetchData() {
-      const authSuccess = await axios.all([
-        axios.post(
-          `https://www.strava.com/oauth/token?client_id=109159&client_secret=57955245359f41f9f56b7bd805bf1054f8000942&refresh_token=31c2709a9c4a06b1f10455527a8267adf0511d38&grant_type=refresh_token`
-        ),
-      ]);
+      const authResult = await axios.post(
+        `https://www.strava.com/oauth/token?client_id=109159&client_secret=57955245359f41f9f56b7bd805bf1054f8000942&refresh_token=31c2709a9c4a06b1f10455527a8267adf0511d38&grant_type=refresh_token`
+      );
+      if (authResult?.data && authResult.data?.access_token) {
+        const activitiesResponse = await axios.get(
+          `https://www.strava.com/api/v3/athlete/activities?access_token=${authResult.data.access_token}&per_page=200`
+        );
 
-      if (authSuccess?.length && authSuccess[0].data?.access_token) {
-        const activitiesResponse = await axios.all([
-          axios.get(
-            `https://www.strava.com/api/v3/athlete/activities?access_token=${authSuccess[0].data.access_token}&per_page=200`
-          ),
-        ]);
+        const activities = activitiesResponse.data as ActivityResponse[];
 
-        if (!activitiesResponse?.length) {
-          return;
-        }
         setActivities(
-          (activitiesResponse[0].data as ActivityResponse[]).map(
-            (activity) => ({
-              id: activity.id,
-              name: activity.name,
-              positions: polyline.decode(activity.map.summary_polyline),
-            })
-          )
+          activities.map((activity) => ({
+            id: activity.id,
+            name: activity.name,
+            positions: polyline.decode(activity.map.summary_polyline),
+          }))
         );
       }
     }
@@ -64,7 +57,7 @@ export default function Home() {
       {currentLocation?.length === 2 ? (
         <LazyMap points={activities} location={currentLocation} />
       ) : (
-        <div>Loading</div>
+        <div>Loading...</div>
       )}
     </main>
   );

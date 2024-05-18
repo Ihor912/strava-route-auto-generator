@@ -1,5 +1,5 @@
 export interface ActivityResponse {
-  id: string;
+  id: number;
   name: string;
   map: Map;
 }
@@ -10,7 +10,7 @@ export interface Map {
 }
 
 export interface Activity {
-  id: string;
+  id: number;
   name: string;
   positions: [number, number][];
 }

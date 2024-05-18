@@ -10,6 +10,7 @@ import "leaflet-defaulticon-compatibility";
 import { MapContainer, Polyline, Popup, TileLayer } from "react-leaflet";
 import { Activity } from "@/types/Strava";
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function Map({
   points,
@@ -37,7 +38,9 @@ export default function Map({
       {points.map((activity: Activity) => (
         <Polyline key={activity.id} positions={activity.positions}>
           <Popup>
-            <h2>{activity.name}</h2>
+            <Link className="link" href={`/activities/${activity.id}`}>
+              <h2>{activity.name}</h2>
+            </Link>
           </Popup>
         </Polyline>
       ))}
