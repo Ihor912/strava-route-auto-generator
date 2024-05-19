@@ -16,7 +16,7 @@ export function useActivities() {
     async function fetchActivities() {
       try {
         const authResponse = await axios.post(
-          `${API_BASE_URL}/oauth/token?client_id=109159&client_secret=57955245359f41f9f56b7bd805bf1054f8000942&refresh_token=31c2709a9c4a06b1f10455527a8267adf0511d38&grant_type=refresh_token`
+          `${API_BASE_URL}/oauth/token?client_id=${process.env.STRAVA_CLIENT_ID}&client_secret=${process.env.STRAVA_CLIENT_SECRET}&refresh_token=${process.env.STRAVA_REFRESH_TOKEN}&grant_type=refresh_token`
         );
         if (authResponse.status !== 200) {
           throw new Error("Network response was not ok");
