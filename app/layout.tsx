@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NavLinks } from "./ui/nav-links";
 import { ActivitiesProvider } from "./context/activities-context";
+import { SavedRoutesProvider } from "./context/saved-routes-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ActivitiesProvider>
-          <NavLinks />
-          <main>{children}</main>
+          <SavedRoutesProvider>
+            <NavLinks />
+            <main>{children}</main>
+          </SavedRoutesProvider>
         </ActivitiesProvider>
       </body>
     </html>
