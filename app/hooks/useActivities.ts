@@ -6,7 +6,7 @@ import polyline from "@mapbox/polyline";
 
 export function useActivities() {
   // store activities in context and fetch new data only in case if it's empty.
-  const { activities, setActivities } = useContext(ActivitiesContext);
+  const { activities, dispatch } = useContext(ActivitiesContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -25,14 +25,14 @@ export function useActivities() {
           );
 
           const activities = activitiesResponse.data as ActivityResponse[];
-
-          setActivities(
-            activities.map((activity) => ({
+          dispatch({
+            type: "SET_ACTIVITIES",
+            payload: activities.map((activity) => ({
               id: activity.id,
               name: activity.name,
               positions: polyline.decode(activity.map.summary_polyline),
-            }))
-          );
+            })),
+          });
         }
       } catch (err) {
         setError(err as Error);
@@ -46,7 +46,7 @@ export function useActivities() {
     if (!activities.length) {
       fetchActivities();
     }
-  }, []);
+  }, [dispatch]);
 
   return { activities, loading, error };
 }
