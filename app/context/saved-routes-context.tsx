@@ -1,18 +1,37 @@
 "use client";
 
 import { Route } from "@/types/Strava";
-import { createContext, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  createContext,
+  useReducer,
+  useState,
+} from "react";
+import {
+  SavedRouteAction,
+  SavedRouteState,
+  savedRoutesReducer,
+} from "../reducers/savedRoutesReducer";
 
-const SavedRoutesContext = createContext<{
-  routes: Route[];
-  setRoutes: (routes: Route[]) => void;
-}>();
+interface SavedRoutesProviderProps {
+  children: ReactNode;
+}
 
-const SavedRoutesProvider = ({ children }) => {
-  const [routes, setRoutes] = useState<Route[]>([]);
+interface SavedRoutesContextType {
+  routes: SavedRouteState;
+  dispatch: Dispatch<SavedRouteAction>;
+}
+
+const SavedRoutesContext = createContext<SavedRoutesContextType | undefined>(
+  undefined
+);
+
+const SavedRoutesProvider = ({ children }: SavedRoutesProviderProps) => {
+  const [routes, dispatch] = useReducer(savedRoutesReducer, []);
 
   return (
-    <SavedRoutesContext.Provider value={{ routes, setRoutes }}>
+    <SavedRoutesContext.Provider value={{ routes, dispatch }}>
       {children}
     </SavedRoutesContext.Provider>
   );

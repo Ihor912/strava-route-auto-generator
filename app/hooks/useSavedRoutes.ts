@@ -5,8 +5,8 @@ import { ActivityResponse } from "@/types/Strava";
 import polyline from "@mapbox/polyline";
 
 export function useSavedRoutes() {
-  // store routes in context and fetch new data only in case if it's empty.
-  const { routes, setRoutes } = useContext(SavedRoutesContext);
+  // store routes in context reducer and fetch new data only in case if it's empty.
+  const { routes, dispatch } = useContext(SavedRoutesContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -37,13 +37,14 @@ export function useSavedRoutes() {
 
           const routes = routesResponse.data as ActivityResponse[];
 
-          setRoutes(
-            routes.map((route) => ({
+          dispatch({
+            type: "SET_SAVED_ROUTES",
+            payload: routes.map((route) => ({
               id: route.id,
               name: route.name,
               positions: polyline.decode(route.map.summary_polyline),
-            }))
-          );
+            })),
+          });
         }
       } catch (err) {
         setError(err as Error);
@@ -57,7 +58,7 @@ export function useSavedRoutes() {
     if (!routes.length) {
       fetchSavedRoutes();
     }
-  }, []);
+  }, [dispatch]);
 
   return { routes, loading, error };
 }
