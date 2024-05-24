@@ -5,7 +5,7 @@ import axios from "axios";
 import polyline from "@mapbox/polyline";
 
 export function useActivities() {
-  // store activities in context and fetch new data only in case if it's empty.
+  // store activities in context reducer and fetch new data only in case if it's empty.
   const { activities, dispatch } = useContext(ActivitiesContext);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
