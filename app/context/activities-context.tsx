@@ -28,6 +28,14 @@ const ActivitiesContext = createContext<ActivitiesContextType | undefined>(
   undefined
 );
 
+export const useActivities = (): ActivitiesContextType => {
+  const context = useContext(ActivitiesContext);
+  if (!context) {
+    throw new Error("useActivities must be used within a ActivitiesProvider");
+  }
+  return context;
+};
+
 const ActivitiesProvider = ({ children }: ActivitiesProviderProps) => {
   const [activities, dispatch] = useReducer(activitiesReducer, []);
 

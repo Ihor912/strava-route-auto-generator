@@ -2,8 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { useActivities } from "./hooks/useActivities";
-import { useSavedRoutes } from "./hooks/useSavedRoutes";
+import { useActivitiesFetching } from "./hooks/useActivitiesFetching";
+import { useSavedRoutesFetching } from "./hooks/useSavedRoutesFetching";
 
 const LazyMap = dynamic(() => import("@/app/ui/map"), {
   ssr: false,
@@ -11,8 +11,8 @@ const LazyMap = dynamic(() => import("@/app/ui/map"), {
 });
 
 export default function Home() {
-  const { activities, loading, error } = useActivities();
-  const { routes } = useSavedRoutes();
+  const { activities, loading, error } = useActivitiesFetching();
+  const { routes } = useSavedRoutesFetching();
   const [currentLocation, setCurrentLocation] = useState<[number, number] | []>(
     []
   );

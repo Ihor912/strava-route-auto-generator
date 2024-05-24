@@ -1,11 +1,14 @@
 import { ActivityResponse } from "@/types/Strava";
 import { useState, useEffect, useContext } from "react";
-import { ActivitiesContext } from "../context/activities-context";
+import {
+  ActivitiesContext,
+  useActivities,
+} from "../context/activities-context";
 import axios from "axios";
 
-export function useActivities() {
+export function useActivitiesFetching() {
   // store activities in context reducer and fetch new data only in case if it's empty.
-  const { activities, dispatch } = useContext(ActivitiesContext);
+  const { activities, dispatch } = useActivities();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 

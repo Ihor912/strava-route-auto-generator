@@ -1,11 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { SavedRoutesContext } from "../context/saved-routes-context";
+import {
+  SavedRoutesContext,
+  useSavedRoutes,
+} from "../context/saved-routes-context";
 import { ActivityResponse } from "@/types/Strava";
 
-export function useSavedRoutes() {
+export function useSavedRoutesFetching() {
   // store routes in context reducer and fetch new data only in case if it's empty.
-  const { routes, dispatch } = useContext(SavedRoutesContext);
+  const { routes, dispatch } = useSavedRoutes();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 

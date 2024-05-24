@@ -1,4 +1,4 @@
-import { Activity } from "@/types/Strava";
+import { Activity, ActivityResponse } from "@/types/Strava";
 import polyline from "@mapbox/polyline";
 
 export const savedRoutesReducer = (
@@ -22,5 +22,5 @@ export const savedRoutesReducer = (
 export interface SavedRouteState extends Array<Activity> {}
 
 export type SavedRouteAction =
-  | { type: "SET_SAVED_ROUTES"; payload: Activity[] }
+  | { type: "SET_SAVED_ROUTES"; payload: ActivityResponse[] }
   | { type: "ADD_SAVED_ROUTE"; payload: Activity }; // to implement
