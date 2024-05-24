@@ -15,7 +15,7 @@ import {
   activitiesReducer,
 } from "../reducers/activitiesReducer";
 
-interface ProductsProviderProps {
+interface ActivitiesProviderProps {
   children: ReactNode;
 }
 
@@ -36,7 +36,7 @@ export const useActivities = (): ActivitiesContextType => {
   return context;
 };
 
-const ActivitiesProvider = ({ children }: ProductsProviderProps) => {
+const ActivitiesProvider = ({ children }: ActivitiesProviderProps) => {
   const [activities, dispatch] = useReducer(activitiesReducer, []);
 
   return (
