@@ -1,4 +1,5 @@
 import { Activity } from "@/types/Strava";
+import polyline from "@mapbox/polyline";
 
 export const activitiesReducer = (
   state: ActivityState,
@@ -6,7 +7,11 @@ export const activitiesReducer = (
 ): ActivityState => {
   switch (action.type) {
     case "SET_ACTIVITIES":
-      return action.payload;
+      return action.payload.map((route) => ({
+        id: route.id,
+        name: route.name,
+        positions: polyline.decode(route.map.summary_polyline),
+      }));
     case "ADD_ACTIVITY":
       return [...state, action.payload];
     default:

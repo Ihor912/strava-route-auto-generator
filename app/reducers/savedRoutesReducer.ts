@@ -1,4 +1,5 @@
 import { Activity } from "@/types/Strava";
+import polyline from "@mapbox/polyline";
 
 export const savedRoutesReducer = (
   state: SavedRouteState,
@@ -6,7 +7,11 @@ export const savedRoutesReducer = (
 ): SavedRouteState => {
   switch (action.type) {
     case "SET_SAVED_ROUTES":
-      return action.payload;
+      return action.payload.map((route) => ({
+        id: route.id,
+        name: route.name,
+        positions: polyline.decode(route.map.summary_polyline),
+      }));
     case "ADD_SAVED_ROUTE":
       return [...state, action.payload];
     default:

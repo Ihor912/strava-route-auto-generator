@@ -2,7 +2,6 @@ import { ActivityResponse } from "@/types/Strava";
 import { useState, useEffect, useContext } from "react";
 import { ActivitiesContext } from "../context/activities-context";
 import axios from "axios";
-import polyline from "@mapbox/polyline";
 
 export function useActivities() {
   // store activities in context reducer and fetch new data only in case if it's empty.
@@ -27,11 +26,7 @@ export function useActivities() {
           const activities = activitiesResponse.data as ActivityResponse[];
           dispatch({
             type: "SET_ACTIVITIES",
-            payload: activities.map((activity) => ({
-              id: activity.id,
-              name: activity.name,
-              positions: polyline.decode(activity.map.summary_polyline),
-            })),
+            payload: activities,
           });
         }
       } catch (err) {

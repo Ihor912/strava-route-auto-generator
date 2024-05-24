@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { SavedRoutesContext } from "../context/saved-routes-context";
 import { ActivityResponse } from "@/types/Strava";
-import polyline from "@mapbox/polyline";
 
 export function useSavedRoutes() {
   // store routes in context reducer and fetch new data only in case if it's empty.
@@ -39,11 +38,7 @@ export function useSavedRoutes() {
 
           dispatch({
             type: "SET_SAVED_ROUTES",
-            payload: routes.map((route) => ({
-              id: route.id,
-              name: route.name,
-              positions: polyline.decode(route.map.summary_polyline),
-            })),
+            payload: routes,
           });
         }
       } catch (err) {
