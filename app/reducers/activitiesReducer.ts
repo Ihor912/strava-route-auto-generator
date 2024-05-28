@@ -7,7 +7,7 @@ export const activitiesReducer = (
 ): ActivityState => {
   switch (action.type) {
     case "SET_ACTIVITIES":
-      return action.payload.map((route) => ({
+      return action.payload?.map((route) => ({
         id: route.id,
         name: route.name,
         positions: polyline.decode(route.map.summary_polyline),

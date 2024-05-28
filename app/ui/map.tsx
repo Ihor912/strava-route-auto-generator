@@ -9,7 +9,6 @@ import "leaflet-defaulticon-compatibility";
 // END: Preserve spaces to avoid auto-sorting
 import { MapContainer, Polyline, Popup, TileLayer } from "react-leaflet";
 import { Activity, Route } from "@/types/Strava";
-import { useEffect } from "react";
 import Link from "next/link";
 
 export default function Map({

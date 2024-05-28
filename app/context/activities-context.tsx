@@ -1,13 +1,11 @@
 "use client";
 
-import { Activity } from "@/types/Strava";
 import {
   Dispatch,
   ReactNode,
   createContext,
   useContext,
   useReducer,
-  useState,
 } from "react";
 import {
   ActivityAction,
@@ -28,7 +26,7 @@ const ActivitiesContext = createContext<ActivitiesContextType | undefined>(
   undefined
 );
 
-export const useActivities = (): ActivitiesContextType => {
+export const useActivitiesContext = (): ActivitiesContextType => {
   const context = useContext(ActivitiesContext);
   if (!context) {
     throw new Error("useActivities must be used within a ActivitiesProvider");

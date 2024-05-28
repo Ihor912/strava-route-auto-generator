@@ -4,6 +4,7 @@ import "./globals.css";
 import { NavLinks } from "./ui/nav-links";
 import { ActivitiesProvider } from "./context/activities-context";
 import { SavedRoutesProvider } from "./context/saved-routes-context";
+import { QueryProvider } from "./query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ActivitiesProvider>
           <SavedRoutesProvider>
-            <NavLinks />
-            <main>{children}</main>
+            <QueryProvider>
+              <NavLinks />
+              <main>{children}</main>
+            </QueryProvider>
           </SavedRoutesProvider>
         </ActivitiesProvider>
       </body>
